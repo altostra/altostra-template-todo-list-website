@@ -1,0 +1,21 @@
+{
+  "id": "altostra-template-dynamic-we-hq0026h",
+  "name": "altostra-template-dynamic-website",
+  "type": "altostra",
+  "description": "An empty project template",
+  "created": "2022-10-27T09:40:43.439Z",
+  "blueprints": [
+    {
+      "version": "2019-10-24",
+      "connections": {},
+      "resources": {},
+      "metadata": {
+        "designer": {
+          "resourcePositions": {}
+        }
+      },
+      "id": "altostra-template-dynamic-we-hq0026h",
+      "name": "altostra-template-dynamic-website"
+    }
+  ]
+}
