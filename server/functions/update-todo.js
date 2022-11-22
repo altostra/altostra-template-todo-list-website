@@ -18,8 +18,7 @@ module.exports.handler = async (event, context) => {
     }).promise()
 
     return {
-      statusCode: 200,
-      body: "Ok"
+      statusCode: 204,
     };
   }
   catch (error) {

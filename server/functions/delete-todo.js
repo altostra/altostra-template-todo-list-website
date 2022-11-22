@@ -8,11 +8,10 @@ module.exports.handler = async (event, context) => {
     await docClient.delete({
       TableName: process.env[TABLE_NAME],
       Key: event.pathParameters.id,
-    }).promise()
+    }).promise();
 
     return {
-      statusCode: 200,
-      body: "Ok"
+      statusCode: 204,
     };
   }
   catch (error) {

@@ -9,20 +9,25 @@ exports.handler = async (event, context) => {
 
     const { todoText } = JSON.parse(event.body)
 
+    const item = {
+      id: uuid(),
+      todoText,
+      isDone: false,
+    }
+
     await docClient.put({
       TableName: process.env[TABLE_NAME],
-      Item: {
-        id: uuid(),
-        todoText,
-        isDone: false,
-      },
+      Item: item,
       // throws if key already presented,
       ConditionExpression: 'attribute_not_exists(id)',
     }).promise()
 
     return {
       statusCode: 200,
-      body: "Ok"
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(item),
     };
   }
   catch (err) {

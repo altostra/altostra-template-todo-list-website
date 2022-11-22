@@ -11,7 +11,10 @@ module.exports.handler = async (event, context) => {
 
     return {
       statusCode: 200,
-      body: allToDos
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(allToDos),
     };
   }
   catch (error) {
