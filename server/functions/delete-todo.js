@@ -1,5 +1,5 @@
-import { DocumentClient } from 'aws-sdk/clients/dynamodb'
-import TABLE_NAME from '../constants'
+const { DocumentClient } = require('aws-sdk/clients/dynamodb')
+const { TABLE_NAME } = require('../constants')
 
 module.exports.handler = async (event, context) => {
   try {

@@ -1,3 +1,3 @@
 const TABLE_NAME = 'TABLE_TABLE01'
 
-exports.TABLE_NAME
+exports.TABLE_NAME = TABLE_NAME

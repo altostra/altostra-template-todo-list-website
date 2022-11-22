@@ -3,7 +3,7 @@ const AWS = require('aws-sdk');
 const { v4: uuid } = require('uuid')
 const TABLE_NAME = require('../constants')
 
-module.exports.handler = async (event, context) => {
+exports.handler = async (event, context) => {
   try {
     const docClient = new AWS.DynamoDB.DocumentClient()
 

@@ -95,7 +95,7 @@
 					"accessLevel": "private",
 					"filesSources": [
 						{
-							"path": "files",
+							"path": "public",
 							"type": "files-source.project-dir"
 						}
 					],
