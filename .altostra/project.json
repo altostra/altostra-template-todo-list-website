@@ -1,21 +1,297 @@
 {
-  "id": "altostra-template-dynamic-we-hq0026h",
-  "name": "altostra-template-dynamic-website",
-  "type": "altostra",
-  "description": "An empty project template",
-  "created": "2022-10-27T09:40:43.439Z",
-  "blueprints": [
-    {
-      "version": "2019-10-24",
-      "connections": {},
-      "resources": {},
-      "metadata": {
-        "designer": {
-          "resourcePositions": {}
-        }
-      },
-      "id": "altostra-template-dynamic-we-hq0026h",
-      "name": "altostra-template-dynamic-website"
-    }
-  ]
+	"id": "altostra-template-dynamic-we-hq0026h",
+	"name": "altostra-template-dynamic-website",
+	"type": "altostra",
+	"description": "An empty project template",
+	"created": "2022-10-27T09:40:43.439Z",
+	"blueprints": [
+		{
+			"version": "2019-10-24",
+			"connections": {
+				"ApiEndpoint01": {
+					"AddTodo02": {
+						"type": "connection.trigger",
+						"from": "ApiEndpoint01",
+						"to": "AddTodo02"
+					}
+				},
+				"ApiEndpoint03": {
+					"DeleteTodo01": {
+						"type": "connection.trigger",
+						"from": "ApiEndpoint03",
+						"to": "DeleteTodo01"
+					}
+				},
+				"ApiEndpoint02": {
+					"GetAllTodos01": {
+						"type": "connection.trigger",
+						"from": "ApiEndpoint02",
+						"to": "GetAllTodos01"
+					}
+				},
+				"ApiEndpoint04": {
+					"UpdateTodo01": {
+						"type": "connection.trigger",
+						"from": "ApiEndpoint04",
+						"to": "UpdateTodo01"
+					}
+				},
+				"Cdn01": {
+					"Bucket01": {
+						"type": "connection.dependency.cdn-storage",
+						"bucketRoot": "",
+						"route": "",
+						"from": "Cdn01",
+						"to": "Bucket01"
+					}
+				},
+				"AddTodo02": {
+					"Table01": {
+						"type": "connection.resource-access",
+						"accessLevel": "read-write",
+						"from": "AddTodo02",
+						"to": "Table01"
+					}
+				},
+				"DeleteTodo01": {
+					"Table01": {
+						"type": "connection.resource-access",
+						"accessLevel": "read-write",
+						"from": "DeleteTodo01",
+						"to": "Table01"
+					}
+				},
+				"GetAllTodos01": {
+					"Table01": {
+						"type": "connection.resource-access",
+						"accessLevel": "read-write",
+						"from": "GetAllTodos01",
+						"to": "Table01"
+					}
+				},
+				"UpdateTodo01": {
+					"Table01": {
+						"type": "connection.resource-access",
+						"accessLevel": "read-write",
+						"from": "UpdateTodo01",
+						"to": "Table01"
+					}
+				}
+			},
+			"resources": {
+				"Cdn01": {
+					"type": "resource.cdn",
+					"name": "site-cdn",
+					"defaultRoot": "index.html",
+					"isSPA": false,
+					"tls": {
+						"useTLS": false
+					},
+					"id": "Cdn01"
+				},
+				"Bucket01": {
+					"type": "resource.file-store",
+					"name": "site-files",
+					"accessLevel": "private",
+					"filesSources": [
+						{
+							"path": "files",
+							"type": "files-source.project-dir"
+						}
+					],
+					"id": "Bucket01"
+				},
+				"ApiGateway01": {
+					"type": "resource.api",
+					"name": "ApiGateway01",
+					"cors": {
+						"type": "api.cors.none"
+					},
+					"endpoints": [
+						{
+							"type": "ref",
+							"id": "ApiEndpoint01"
+						},
+						{
+							"type": "ref",
+							"id": "ApiEndpoint02"
+						},
+						{
+							"type": "ref",
+							"id": "ApiEndpoint03"
+						},
+						{
+							"type": "ref",
+							"id": "ApiEndpoint04"
+						}
+					],
+					"id": "ApiGateway01"
+				},
+				"ApiEndpoint01": {
+					"type": "resource.api.endpoint",
+					"name": "api-endpoint-0",
+					"method": "POST",
+					"path": "/todo/add",
+					"api": {
+						"type": "ref",
+						"id": "ApiGateway01"
+					},
+					"id": "ApiEndpoint01"
+				},
+				"AddTodo02": {
+					"type": "resource.compute.function",
+					"name": "add-todo",
+					"memory": 512,
+					"timeout": 6,
+					"entryPoint": "server/functions/add-todo.handler",
+					"runtime": "nodejs12.x",
+					"packageType": "zip",
+					"layers": [],
+					"environment": {
+						"variables": {}
+					},
+					"id": "AddTodo02"
+				},
+				"ApiEndpoint02": {
+					"type": "resource.api.endpoint",
+					"name": "api-endpoint-1",
+					"method": "GET",
+					"path": "/todo/get-all",
+					"api": {
+						"type": "ref",
+						"id": "ApiGateway01"
+					},
+					"id": "ApiEndpoint02"
+				},
+				"ApiEndpoint03": {
+					"type": "resource.api.endpoint",
+					"name": "api-endpoint-1",
+					"method": "DELETE",
+					"path": "/todo/delete/{id}",
+					"api": {
+						"type": "ref",
+						"id": "ApiGateway01"
+					},
+					"id": "ApiEndpoint03"
+				},
+				"ApiEndpoint04": {
+					"type": "resource.api.endpoint",
+					"name": "api-endpoint-1",
+					"method": "PUT",
+					"path": "/todo/update/{id}",
+					"api": {
+						"type": "ref",
+						"id": "ApiGateway01"
+					},
+					"id": "ApiEndpoint04"
+				},
+				"DeleteTodo01": {
+					"type": "resource.compute.function",
+					"name": "delete-todo",
+					"memory": 512,
+					"timeout": 6,
+					"entryPoint": "server/functions/delete-todo.handler",
+					"runtime": "nodejs12.x",
+					"packageType": "zip",
+					"layers": [],
+					"environment": {
+						"variables": {}
+					},
+					"id": "DeleteTodo01"
+				},
+				"GetAllTodos01": {
+					"type": "resource.compute.function",
+					"name": "get-all-todos",
+					"memory": 512,
+					"timeout": 6,
+					"entryPoint": "server/functions/get-all-todos.handler",
+					"runtime": "nodejs12.x",
+					"packageType": "zip",
+					"layers": [],
+					"environment": {
+						"variables": {}
+					},
+					"id": "GetAllTodos01"
+				},
+				"UpdateTodo01": {
+					"type": "resource.compute.function",
+					"name": "update-todo",
+					"memory": 512,
+					"timeout": 6,
+					"entryPoint": "server/functions/update-todo.handler",
+					"runtime": "nodejs12.x",
+					"packageType": "zip",
+					"layers": [],
+					"environment": {
+						"variables": {}
+					},
+					"id": "UpdateTodo01"
+				},
+				"Table01": {
+					"type": "resource.table",
+					"name": "toDo",
+					"tableName": "",
+					"key": {
+						"hash": {
+							"name": "id",
+							"type": "STRING"
+						}
+					},
+					"aws": {
+						"billingModel": "PAY_PER_REQUEST"
+					},
+					"id": "Table01"
+				}
+			},
+			"metadata": {
+				"designer": {
+					"resourcePositions": {
+						"Cdn01": {
+							"x": 314,
+							"y": 206.25,
+							"z": 0
+						},
+						"Bucket01": {
+							"x": 543,
+							"y": 206.25,
+							"z": 0
+						},
+						"ApiGateway01": {
+							"x": 179,
+							"y": 360.5,
+							"z": 0
+						},
+						"AddTodo02": {
+							"x": 508,
+							"y": 353.5,
+							"z": 0
+						},
+						"DeleteTodo01": {
+							"x": 509,
+							"y": 403,
+							"z": 0
+						},
+						"GetAllTodos01": {
+							"x": 508,
+							"y": 450,
+							"z": 0
+						},
+						"UpdateTodo01": {
+							"x": 507,
+							"y": 499,
+							"z": 0
+						},
+						"Table01": {
+							"x": 789,
+							"y": 415.5,
+							"z": 0
+						}
+					}
+				}
+			},
+			"id": "altostra-template-dynamic-we-hq0026h",
+			"name": "altostra-template-dynamic-website",
+			"unsafe": false
+		}
+	]
 }
