@@ -1,13 +1,13 @@
 import { getAll, deleteTodo, update, add } from './server';
 
 const todoList = document.getElementById('todo-list')
-const todoText = document.getElementById('todo-text')
+const todoInput = document.getElementById('todo-text')
 
 if (!todoList) {
   throw new Error('Could not find todo list')
 }
 
-if (!todoText) {
+if (!todoInput) {
   throw new Error('Could not find todo text')
 }
 
@@ -18,11 +18,11 @@ todoList.append(...items)
 
 Object.assign(window, {
   addTodo: asEventHandler(async function addTodo() {
-    const todoData = todoText.value
-    todoText.value = ''
+    const todoText = todoInput.value
+    todoInput.value = ''
 
     const todo = await add({
-      todoText: todoData,
+      todoText,
       isDone: false,
     })
 
