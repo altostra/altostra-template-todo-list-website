@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,9 +8,20 @@
   <title>To Do</title>
   <link rel="stylesheet" href="style.css">
   <script src="todo.js" type="module"></script>
+  <script src="server.js" type="module"></script>
   <script src="api.js" type="module"></script>
 </head>
+
 <body>
-  
+  <div id="header" class="header">
+    <h2>To Do List</h2>
+    <input type="text" id="todo-text" placeholder="To do...">
+    <span onclick="addTodo()" class="btn add-btn">Add</span>
+  </div>
+
+  <ul id="todo-list" onclick="toggleCheck">
+    
+  </ul>
 </body>
+
 </html>

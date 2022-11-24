@@ -1,64 +1,82 @@
-import { apiHost } from 'api';
+import { getAll, deleteTodo, update, add } from './server';
 
-const baseUrl = new URL(`https://${apiHost}/todo`);
+const todoList = document.getElementById('todo-list')
+const todoText = document.getElementById('todo-text')
+
+if (!todoList) {
+  throw new Error('Could not find todo list')
+}
+
+if (!todoText) {
+  throw new Error('Could not find todo text')
+}
+
+const all = await getAll()
+const items = all.map(todoItem)
+
+todoList.append(...items)
 
 Object.assign(window, {
-  async add(todo) {
-    const response = await fetch({
-      url: new URL('add', baseUrl),
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(todo),
-    });
+  addTodo: asEventHandler(async function addTodo() {
+    const todoData = todoText.value
+    todoText.value = ''
 
-    throwIfError(response)
-
-    const responseTodo = await response.json()
-
-    return responseTodo
-  },
-
-  async deleteTodo(id) {
-    const response = fetch({
-      url: new URL(`delete/${encodeURIComponent(id)}`, baseUrl),
-      method: 'DELETE',
+    const todo = await add({
+      todoText: todoData,
+      isDone: false,
     })
 
-    throwIfError(response)
-  },
+    todoList.appendChild(todoItem(todo))
+  }),
 
-  async getAll() {
-    const response = await fetch(new URL('get-all', baseUrl));
+  toggleCheck: asEventHandler(async function toggleCheck(ev) {
+    if (ev.target.tagName === 'LI') {
+      const wasChecked = ev.target.classList.contains(checked)
+      const todo = todoByElement.get(ev.target)
 
-    throwIfError(response)
+      if (!todo) {
+        throw new Error('Could not find todo data')
+      }
 
-    const todoList = response.json()
+      todo.isDone = !wasChecked
+      const updatedTodo = await update(todo)
+      todoByElement.set(ev.target, updatedTodo)
 
-    return todoList
-  },
+      ev.target.classList.toggle('checked');
+    }
+  }),
+})
 
-  async update({ id, todoText, isDone }) {
-    const response = await fetch({
-      url: new URL(`update/${encodeURIComponent(id)}`),
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ todoText, isDone }),
-    })
-
-    throwIfError(response)
+function asEventHandler(fn) {
+  return function (...args) {
+    Promise.resolve(fn.apply(this, args))
+      .catch(err => console.error(err))
   }
-});
+}
 
-function throwIfError(response) {
-  if (!response.ok) {
-    throw Object.assign(new Error(response.statusText), {
-      status: response.status,
-      statusText: response.statusText,
-      response,
-    })
+const todoByElement = new WeakMap()
+
+function todoItem(todo) {
+  const { id, todoText, isDone } = todo
+
+  const closeButton = document.createElement('span')
+  closeButton.appendChild(document.createTextNode('\u00D7'))
+  closeButton.className = 'close'
+  closeButton.onclick = asEventHandler(async function removeTodo() {
+    await deleteTodo(id)
+    item.remove()
+  })
+
+  const item = document.createElement('li')
+  item.
+    item.appendChild(document.createTextNode(todoText))
+  item.appendChild(closeButton)
+
+  if (isDone) {
+    item.classList.add('checked')
   }
+
+  todoByElement.set(item, todo)
+
+  return item
 }
