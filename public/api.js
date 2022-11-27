@@ -1,1 +1,1 @@
-export const apiHost = 'abc.example.com'
+export const baseUrl = 'https://abc.example.com/Prod'

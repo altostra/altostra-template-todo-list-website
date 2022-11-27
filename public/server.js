@@ -1,6 +1,6 @@
-import { apiHost } from 'api';
+import { baseUrl } from './api';
 
-const baseUrl = new URL(`https://${apiHost}/todo`);
+const baseUrl = new URL(baseUrl, 'todo');
 
 export async function add(todo) {
   const response = await fetch({

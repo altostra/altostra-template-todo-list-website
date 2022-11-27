@@ -37,12 +37,12 @@
 					}
 				},
 				"Cdn01": {
-					"Bucket01": {
+					"SiteFiles01": {
 						"type": "connection.dependency.cdn-storage",
 						"bucketRoot": "",
 						"route": "",
 						"from": "Cdn01",
-						"to": "Bucket01"
+						"to": "SiteFiles01"
 					}
 				},
 				"AddTodo02": {
@@ -89,7 +89,7 @@
 					},
 					"id": "Cdn01"
 				},
-				"Bucket01": {
+				"SiteFiles01": {
 					"type": "resource.file-store",
 					"name": "site-files",
 					"accessLevel": "private",
@@ -99,7 +99,7 @@
 							"type": "files-source.project-dir"
 						}
 					],
-					"id": "Bucket01"
+					"id": "SiteFiles01"
 				},
 				"ApiGateway01": {
 					"type": "resource.api",
@@ -251,7 +251,7 @@
 							"y": 206.25,
 							"z": 0
 						},
-						"Bucket01": {
+						"SiteFiles01": {
 							"x": 543,
 							"y": 206.25,
 							"z": 0
