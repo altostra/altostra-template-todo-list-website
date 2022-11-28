@@ -1,6 +1,11 @@
-import { baseUrl as apiUrl } from './api';
+import { baseUrl as apiUrl } from './api.js';
 
-const baseUrl = new URL(apiUrl, 'todo');
+// In order to append path using the URL constructor - the "baseURL" must end with a '/'
+const normalized = apiUrl.endsWith('/')
+  ? apiUrl
+  : apiUrl + '/'
+
+const baseUrl = new URL('todo/', normalized);
 
 export async function add(todo) {
   const response = await fetch({

@@ -1,51 +1,56 @@
-import { getAll, deleteTodo, update, add } from './server';
+import { getAll, deleteTodo, update, add } from './server.js';
 
-const todoList = document.getElementById('todo-list')
-const todoInput = document.getElementById('todo-text')
+let todoList
+let todoInput
 
-if (!todoList) {
-  throw new Error('Could not find todo list')
+export async function loadAll() {
+  todoList = document.getElementById('todo-list')
+  todoInput = document.getElementById('todo-text')
+
+  if (!todoList) {
+    throw new Error('Could not find todo list')
+  }
+
+  if (!todoInput) {
+    throw new Error('Could not find todo text')
+  }
+
+  const all = await getAll()
+  const items = all.map(todoItem)
+
+  todoList.append(...items)
 }
 
-if (!todoInput) {
-  throw new Error('Could not find todo text')
-}
+export const addTodo = asEventHandler(async function addTodo() {
+  const todoText = todoInput.value
+  todoInput.value = ''
 
-const all = await getAll()
-const items = all.map(todoItem)
+  const todo = await add({
+    todoText,
+    isDone: false,
+  })
 
-todoList.append(...items)
-
-Object.assign(window, {
-  addTodo: asEventHandler(async function addTodo() {
-    const todoText = todoInput.value
-    todoInput.value = ''
-
-    const todo = await add({
-      todoText,
-      isDone: false,
-    })
-
-    todoList.appendChild(todoItem(todo))
-  }),
-
-  toggleCheck: asEventHandler(async function toggleCheck(ev) {
-    if (ev.target.tagName === 'LI') {
-      const wasChecked = ev.target.classList.contains(checked)
-      const todo = todoByElement.get(ev.target)
-
-      if (!todo) {
-        throw new Error('Could not find todo data')
-      }
-
-      todo.isDone = !wasChecked
-      const updatedTodo = await update(todo)
-      todoByElement.set(ev.target, updatedTodo)
-
-      ev.target.classList.toggle('checked');
-    }
-  }),
+  todoList.appendChild(todoItem(todo))
 })
+
+export const toggleCheck = asEventHandler(async function toggleCheck(ev) {
+  if (ev.target.tagName === 'LI') {
+    const wasChecked = ev.target.classList.contains(checked)
+    const todo = todoByElement.get(ev.target)
+
+    if (!todo) {
+      throw new Error('Could not find todo data')
+    }
+
+    todo.isDone = !wasChecked
+    const updatedTodo = await update(todo)
+    todoByElement.set(ev.target, updatedTodo)
+
+    ev.target.classList.toggle('checked');
+  }
+})
+
+
 
 function asEventHandler(fn) {
   return function (...args) {

@@ -7,9 +7,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To Do</title>
   <link rel="stylesheet" href="style.css">
-  <script src="todo.js" type="module"></script>
-  <script src="server.js" type="module"></script>
-  <script src="api.js" type="module"></script>
+  <script src="./todo.js" type="module"></script>
+  <script src="./server.js" type="module"></script>
+  <script src="./api.js" type="module"></script>
+
+  <script type="module">
+    import {
+      loadAll,
+      addTodo,
+      toggleCheck,
+    } from './todo.js'
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      Object.assign(window, {
+        addTodo,
+        toggleCheck,
+      })
+
+      await loadAll().catch(console.error)
+    })
+  </script>
 </head>
 
 <body>
