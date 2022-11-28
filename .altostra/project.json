@@ -82,7 +82,7 @@
 				"Cdn01": {
 					"type": "resource.cdn",
 					"name": "site-cdn",
-					"defaultRoot": "index.html",
+					"defaultRoot": "index.htm",
 					"isSPA": false,
 					"tls": {
 						"useTLS": false
