@@ -13,6 +13,7 @@ module.exports.handler = async (event, context) => {
       statusCode: 200,
       headers: {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       },
       body: JSON.stringify(allToDos),
     };
@@ -20,7 +21,10 @@ module.exports.handler = async (event, context) => {
   catch (error) {
     return {
       statusCode: 500,
-      body: err.message
+      body: err.message,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   }
 }
