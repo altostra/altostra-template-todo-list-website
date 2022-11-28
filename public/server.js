@@ -8,8 +8,7 @@ const normalized = apiUrl.endsWith('/')
 const baseUrl = new URL('todo/', normalized);
 
 export async function add(todo) {
-  const response = await fetch({
-    url: new URL('add', baseUrl),
+  const response = await fetch(new URL('add', baseUrl), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -25,8 +24,7 @@ export async function add(todo) {
 }
 
 export async function deleteTodo(id) {
-  const response = fetch({
-    url: new URL(`delete/${encodeURIComponent(id)}`, baseUrl),
+  const response = fetch(new URL(`delete/${encodeURIComponent(id)}`, baseUrl), {
     method: 'DELETE',
   })
 
@@ -44,8 +42,7 @@ export async function getAll() {
 }
 
 export async function update({ id, todoText, isDone }) {
-  const response = await fetch({
-    url: new URL(`update/${encodeURIComponent(id)}`),
+  const response = await fetch(new URL(`update/${encodeURIComponent(id)}`, baseUrl), {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
