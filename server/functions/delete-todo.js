@@ -20,7 +20,7 @@ module.exports.handler = async (event, context) => {
   catch (error) {
     return {
       statusCode: 500,
-      body: err.message,
+      body: error.message,
       headers: {
         'Access-Control-Allow-Origin': '*',
       },

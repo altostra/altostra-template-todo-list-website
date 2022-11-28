@@ -31,10 +31,10 @@ exports.handler = async (event, context) => {
       body: JSON.stringify(item),
     };
   }
-  catch (err) {
+  catch (error) {
     return {
       statusCode: 500,
-      body: err.message,
+      body: error.message,
       headers: {
         'Access-Control-Allow-Origin': '*',
       },

@@ -5,7 +5,7 @@ module.exports.handler = async (event, context) => {
   try {
     const docClient = new DocumentClient()
 
-    const allToDos = await docClient.scan({
+    const { Items: allToDos = [] } = await docClient.scan({
       TableName: process.env[TABLE_NAME],
     }).promise()
 
@@ -21,7 +21,7 @@ module.exports.handler = async (event, context) => {
   catch (error) {
     return {
       statusCode: 500,
-      body: err.message,
+      body: error.message,
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
