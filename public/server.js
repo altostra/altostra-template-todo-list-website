@@ -1,6 +1,6 @@
-import { baseUrl } from './api';
+import { baseUrl as apiUrl } from './api';
 
-const baseUrl = new URL(baseUrl, 'todo');
+const baseUrl = new URL(apiUrl, 'todo');
 
 export async function add(todo) {
   const response = await fetch({
