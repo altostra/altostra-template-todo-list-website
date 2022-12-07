@@ -4,12 +4,13 @@ const { TABLE_NAME } = require('../constants')
 module.exports.handler = async (event, context) => {
   try {
     const docClient = new DocumentClient()
+    const id = event.pathParameters.id
 
     const { todoText, isDone } = JSON.parse(event.body)
 
     await docClient.update({
       TableName: process.env[TABLE_NAME],
-      Key: { id: event.pathParameters.id },
+      Key: { id },
       UpdateExpression: 'set todoText = :t, isDone = :s',
       ExpressionAttributeValues: {
         ':t': todoText,
@@ -17,9 +18,16 @@ module.exports.handler = async (event, context) => {
       }
     }).promise()
 
+    const { Item: resultTodo } = await docClient.get({
+      TableName: process.env[TABLE_NAME],
+      Key: { id },
+    }).promise()
+
     return {
-      statusCode: 204,
+      statusCode: 200,
+      body: JSON.stringify(resultTodo),
       headers: {
+        'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },
     };

@@ -1,7 +1,6 @@
-//import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 const AWS = require('aws-sdk');
-const { v4: uuid } = require('uuid')
-const TABLE_NAME = require('../constants')
+const { TABLE_NAME } = require('../constants')
+const { createHash, randomBytes } = require('crypto')
 
 exports.handler = async (event, context) => {
   try {
@@ -10,7 +9,7 @@ exports.handler = async (event, context) => {
     const { todoText } = JSON.parse(event.body)
 
     const item = {
-      id: uuid(),
+      id: newId(),
       todoText,
       isDone: false,
     }
@@ -40,4 +39,13 @@ exports.handler = async (event, context) => {
       },
     };
   }
+}
+
+function newId() {
+  const sha256 = createHash('sha256')
+
+  sha256.update(new Date().toISOString())
+  sha256.update(randomBytes(16))
+
+  return sha256.digest('hex')
 }

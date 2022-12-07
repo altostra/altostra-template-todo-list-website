@@ -24,7 +24,7 @@ export async function add(todo) {
 }
 
 export async function deleteTodo(id) {
-  const response = fetch(new URL(`delete/${encodeURIComponent(id)}`, baseUrl), {
+  const response = await fetch(new URL(`delete/${encodeURIComponent(id)}`, baseUrl), {
     method: 'DELETE',
   })
 
@@ -51,6 +51,8 @@ export async function update({ id, todoText, isDone }) {
   })
 
   throwIfError(response)
+
+  return await response.json()
 }
 
 function throwIfError(response) {

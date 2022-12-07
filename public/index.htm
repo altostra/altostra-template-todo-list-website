@@ -15,13 +15,11 @@
     import {
       loadAll,
       addTodo,
-      toggleCheck,
     } from './todo.js'
 
     document.addEventListener('DOMContentLoaded', async () => {
       Object.assign(window, {
         addTodo,
-        toggleCheck,
       })
 
       await loadAll().catch(console.error)
@@ -36,7 +34,7 @@
     <span onclick="addTodo()" class="btn add-btn">Add</span>
   </div>
 
-  <ul id="todo-list" onclick="toggleCheck">
+  <ul id="todo-list">
     
   </ul>
 </body>

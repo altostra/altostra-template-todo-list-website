@@ -7,7 +7,9 @@ module.exports.handler = async (event, context) => {
 
     await docClient.delete({
       TableName: process.env[TABLE_NAME],
-      Key: event.pathParameters.id,
+      Key: {
+        id: event.pathParameters.id
+      },
     }).promise();
 
     return {

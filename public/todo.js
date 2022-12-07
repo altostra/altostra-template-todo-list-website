@@ -3,6 +3,23 @@ import { getAll, deleteTodo, update, add } from './server.js';
 let todoList
 let todoInput
 
+const toggleCheck = asEventHandler(async function toggleCheck(ev) {
+  if (ev.target.tagName === 'LI') {
+    const wasChecked = ev.target.classList.contains('checked')
+    const todo = todoByElement.get(ev.target)
+
+    if (!todo) {
+      throw new Error('Could not find todo data')
+    }
+
+    todo.isDone = !wasChecked
+    const updatedTodo = await update(todo)
+    todoByElement.set(ev.target, updatedTodo)
+
+    ev.target.classList.toggle('checked');
+  }
+})
+
 export async function loadAll() {
   todoList = document.getElementById('todo-list')
   todoInput = document.getElementById('todo-text')
@@ -14,6 +31,8 @@ export async function loadAll() {
   if (!todoInput) {
     throw new Error('Could not find todo text')
   }
+
+  todoList.addEventListener('click', toggleCheck)
 
   const all = await getAll()
   const items = all.map(todoItem)
@@ -32,25 +51,6 @@ export const addTodo = asEventHandler(async function addTodo() {
 
   todoList.appendChild(todoItem(todo))
 })
-
-export const toggleCheck = asEventHandler(async function toggleCheck(ev) {
-  if (ev.target.tagName === 'LI') {
-    const wasChecked = ev.target.classList.contains(checked)
-    const todo = todoByElement.get(ev.target)
-
-    if (!todo) {
-      throw new Error('Could not find todo data')
-    }
-
-    todo.isDone = !wasChecked
-    const updatedTodo = await update(todo)
-    todoByElement.set(ev.target, updatedTodo)
-
-    ev.target.classList.toggle('checked');
-  }
-})
-
-
 
 function asEventHandler(fn) {
   return function (...args) {
@@ -73,8 +73,7 @@ function todoItem(todo) {
   })
 
   const item = document.createElement('li')
-  item.
-    item.appendChild(document.createTextNode(todoText))
+  item.appendChild(document.createTextNode(todoText))
   item.appendChild(closeButton)
 
   if (isDone) {
