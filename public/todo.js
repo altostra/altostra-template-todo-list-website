@@ -3,23 +3,6 @@ import { getAll, deleteTodo, update, add } from './server.js';
 let todoList
 let todoInput
 
-const toggleCheck = asEventHandler(async function toggleCheck(ev) {
-  if (ev.target.tagName === 'LI') {
-    const wasChecked = ev.target.classList.contains('checked')
-    const todo = todoByElement.get(ev.target)
-
-    if (!todo) {
-      throw new Error('Could not find todo data')
-    }
-
-    todo.isDone = !wasChecked
-    const updatedTodo = await update(todo)
-    todoByElement.set(ev.target, updatedTodo)
-
-    ev.target.classList.toggle('checked');
-  }
-})
-
 export async function loadAll() {
   todoList = document.getElementById('todo-list')
   todoInput = document.getElementById('todo-text')
@@ -32,11 +15,8 @@ export async function loadAll() {
     throw new Error('Could not find todo text')
   }
 
-  todoList.addEventListener('click', toggleCheck)
-
   const all = await getAll()
   const items = all.map(todoItem)
-
   todoList.append(...items)
 }
 
@@ -48,7 +28,6 @@ export const addTodo = asEventHandler(async function addTodo() {
     todoText,
     isDone: false,
   })
-
   todoList.appendChild(todoItem(todo))
 })
 
@@ -59,7 +38,7 @@ function asEventHandler(fn) {
   }
 }
 
-const todoByElement = new WeakMap()
+const todoByElement = new Map()
 
 function todoItem(todo) {
   const { id, todoText, isDone } = todo
@@ -67,20 +46,46 @@ function todoItem(todo) {
   const closeButton = document.createElement('span')
   closeButton.appendChild(document.createTextNode('\u00D7'))
   closeButton.className = 'close'
-  closeButton.onclick = asEventHandler(async function removeTodo() {
-    await deleteTodo(id)
-    item.remove()
+  closeButton.onclick = asEventHandler(async function removeTodo(event) {
+    await deleteTodo(id);
+    item.remove();
+    event.stopPropagation();
   })
 
-  const item = document.createElement('li')
-  item.appendChild(document.createTextNode(todoText))
-  item.appendChild(closeButton)
-
+  const checkbox = document.createElement('input')
+  checkbox.type = "checkbox";
+  checkbox.value = todoText;
+  checkbox.name = todoText;
+  checkbox.id = id;
   if (isDone) {
-    item.classList.add('checked')
+    checkbox.checked = true;
   }
 
-  todoByElement.set(item, todo)
+
+  const label = document.createElement('label')
+  label.htmlFor = id;
+  label.appendChild(document.createTextNode(todoText));
+
+  const item = document.createElement('li')
+
+  item.appendChild(checkbox)
+  item.appendChild(label)
+  item.appendChild(closeButton)
+
+  item.onclick = asEventHandler(async function toggleCheck() {
+    const todo = todoByElement.get(id)
+
+    if (!todo) {
+      throw new Error('Could not find todo data')
+    }
+
+    todo.isDone = !todo.isDone
+    const updatedTodo = await update(todo)
+    todoByElement.set(id, updatedTodo)
+    item.children[0].toggleAttribute('checked');
+  })
+
+  todoByElement.set(id, todo)
 
   return item
 }
