@@ -15,11 +15,13 @@
     import {
       loadAll,
       addTodo,
+      onKeyUp
     } from './todo.js'
 
     document.addEventListener('DOMContentLoaded', async () => {
       Object.assign(window, {
         addTodo,
+        onKeyUp
       })
 
       await loadAll().catch(console.error)
@@ -32,8 +34,8 @@
     <div id="header" class="header">
       <h2>To Do List</h2>
       <div class="add-container">
-        <input type="text" id="todo-text" placeholder="To do...">
-        <span onclick="addTodo()" class="btn add-btn">Add</span>
+        <input type="text" id="todo-text" placeholder="Things to be done..." onkeyup="onKeyUp()" />
+        <button onclick="addTodo()" class="btn add-btn" disabled>Add</button>
       </div>
     </div>
 

@@ -23,6 +23,7 @@ export async function loadAll() {
 export const addTodo = asEventHandler(async function addTodo() {
   const todoText = todoInput.value
   todoInput.value = ''
+  document.querySelector('.add-btn').disabled = true
 
   const todo = await add({
     todoText,
@@ -30,6 +31,10 @@ export const addTodo = asEventHandler(async function addTodo() {
   })
   todoList.appendChild(todoItem(todo))
 })
+
+export function onKeyUp() {
+  document.querySelector('.add-btn').disabled = !todoInput.value.length
+}
 
 function asEventHandler(fn) {
   return function (...args) {
