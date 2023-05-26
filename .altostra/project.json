@@ -145,13 +145,17 @@
 					"memory": 512,
 					"timeout": 6,
 					"entryPoint": "server/functions/add-todo.handler",
-					"runtime": "nodejs12.x",
+					"runtime": "nodejs16.x",
 					"packageType": "zip",
 					"layers": [],
 					"environment": {
 						"variables": {}
 					},
-					"id": "AddTodo02"
+					"id": "AddTodo02",
+					"endpointUrl": {
+						"enabled": false,
+						"authenticated": false
+					}
 				},
 				"ApiEndpoint02": {
 					"type": "resource.api.endpoint",
@@ -192,13 +196,17 @@
 					"memory": 512,
 					"timeout": 6,
 					"entryPoint": "server/functions/delete-todo.handler",
-					"runtime": "nodejs12.x",
+					"runtime": "nodejs16.x",
 					"packageType": "zip",
 					"layers": [],
 					"environment": {
 						"variables": {}
 					},
-					"id": "DeleteTodo01"
+					"id": "DeleteTodo01",
+					"endpointUrl": {
+						"enabled": false,
+						"authenticated": false
+					}
 				},
 				"GetAllTodos01": {
 					"type": "resource.compute.function",
@@ -206,13 +214,17 @@
 					"memory": 512,
 					"timeout": 6,
 					"entryPoint": "server/functions/get-all-todos.handler",
-					"runtime": "nodejs12.x",
+					"runtime": "nodejs16.x",
 					"packageType": "zip",
 					"layers": [],
 					"environment": {
 						"variables": {}
 					},
-					"id": "GetAllTodos01"
+					"id": "GetAllTodos01",
+					"endpointUrl": {
+						"enabled": false,
+						"authenticated": false
+					}
 				},
 				"UpdateTodo01": {
 					"type": "resource.compute.function",
@@ -220,13 +232,17 @@
 					"memory": 512,
 					"timeout": 6,
 					"entryPoint": "server/functions/update-todo.handler",
-					"runtime": "nodejs12.x",
+					"runtime": "nodejs16.x",
 					"packageType": "zip",
 					"layers": [],
 					"environment": {
 						"variables": {}
 					},
-					"id": "UpdateTodo01"
+					"id": "UpdateTodo01",
+					"endpointUrl": {
+						"enabled": false,
+						"authenticated": false
+					}
 				},
 				"Table01": {
 					"type": "resource.table",
